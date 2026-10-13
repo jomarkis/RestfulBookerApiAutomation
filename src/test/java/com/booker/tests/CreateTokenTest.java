@@ -15,6 +15,8 @@ import static org.hamcrest.Matchers.*;
 
 public class CreateTokenTest {
 
+    String token;
+
     @BeforeAll
     public static void setup() {
         RestAssured.baseURI = "https://restful-booker.herokuapp.com";
@@ -22,9 +24,10 @@ public class CreateTokenTest {
 
     @Test
     @DisplayName("Create Token with True credentials.")
-    void createToken() {
+    public void createToken() {
         AuthCredentials credentials = new AuthCredentials("admin", "password123");
-        given()
+        Response response = (Response) given()
+                .header("Accept","application/json")
                 .header("Content-Type", "application/json")
                 .body(credentials)
                 .when()
@@ -32,7 +35,7 @@ public class CreateTokenTest {
                 .then()
                 .statusCode(200)
                 .body("token", notNullValue());
-
+        this.token =  response.getBody().asString();
     }
 
     @Test

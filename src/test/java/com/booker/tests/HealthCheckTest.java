@@ -15,6 +15,6 @@ public class HealthCheckTest {
                 .when()
                 .get("/ping")
                 .then()
-                .statusCode(201); // The /ping endpoint of Restful-Booker returns 201 Created
+                .statusCode(200);
     }
 }
