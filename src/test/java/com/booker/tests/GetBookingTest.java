@@ -62,9 +62,12 @@ public class GetBookingTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     public class GetBookingWithParam {
 
+        Booking booking;
+        int firstBookingId;
+
         @BeforeAll
         public void setUp() {
-            int firstBookingId = getFirstBookingId();
+            this.firstBookingId = getFirstBookingId();
 
             Booking booking = given()
                     .header("Accept", "application/json")
@@ -72,25 +75,65 @@ public class GetBookingTest {
                     .get("/booking/" + firstBookingId)
                     .as(Booking.class);
 
-            String firstname = booking.getFirstname();
+            this.booking = booking;
         }
 
         @Test
         @DisplayName("Retrieve Booking IDs with specific first name")
         public void getBookingIdsWithFirstNameTest() {
-            int firstBookingId = getFirstBookingId();
-
-            Booking booking = given()
-                    .header("Accept", "application/json")
-                    .when()
-                    .get("/booking/" + firstBookingId)
-                    .as(Booking.class);
-
             String firstname = booking.getFirstname();
 
             given()
                     .header("Accept", "application/json")
                     .queryParam("firstname", firstname) //booking?firstname=Sally
+                    .when()
+                    .get("/booking")
+                    .then()
+                    .statusCode(200)
+                    .body("bookingid", not(empty()))
+                    .body("bookingid", hasItem(firstBookingId));
+        }
+
+        @Test
+        @DisplayName("Retrieve Booking IDs with specific last name")
+        public void getBookingIdsWithLastNameTest() {
+            String lastname = booking.getLastname();
+
+            given()
+                    .header("Accept", "application/json")
+                    .queryParam("lastname", lastname) //booking?lastname=Smith
+                    .when()
+                    .get("/booking")
+                    .then()
+                    .statusCode(200)
+                    .body("bookingid", not(empty()))
+                    .body("bookingid", hasItem(firstBookingId));
+        }
+
+        @Test
+        @DisplayName("Retrieve Booking IDs with specific checkin date")
+        public void getBookingIdsWithCheckinDateTest() {
+            String checkinDate = booking.getBookingdates().getCheckin();
+
+            given()
+                    .header("Accept", "application/json")
+                    .queryParam("checkin", checkinDate) //booking?checkin=2023-01-01
+                    .when()
+                    .get("/booking")
+                    .then()
+                    .statusCode(200)
+                    .body("bookingid", not(empty()))
+                    .body("bookingid", hasItem(firstBookingId));
+        }
+
+        @Test
+        @DisplayName("Retrieve Booking IDs with specific checkout date")
+        public void getBookingIdsWithCheckoutDateTest() {
+            String checkoutDate = booking.getBookingdates().getCheckout();
+
+            given()
+                    .header("Accept", "application/json")
+                    .queryParam("checkout", checkoutDate) //booking?checkout=2023-01-01
                     .when()
                     .get("/booking")
                     .then()
