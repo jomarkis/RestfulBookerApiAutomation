@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.*;
 
 public class GetBookingTest {
 
-    public int getFirstBookingId() {
+    public static int getFirstBookingId() {
         Response response = given()
                 .header("Accept", "application/json")
                 .when()
@@ -55,7 +55,9 @@ public class GetBookingTest {
                 .body("firstname", notNullValue())
                 .body("lastname", notNullValue())
                 .body("totalprice", greaterThanOrEqualTo(0))
-                .body("bookingdates.checkin", notNullValue());
+                .body("bookingdates.checkin", notNullValue())
+                .body("bookingdates.checkout", notNullValue())
+                .body("additionalneeds", notNullValue());
     }
 
     @Nested

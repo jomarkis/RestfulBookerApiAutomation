@@ -45,4 +45,63 @@ public class CreateBookingTest {
                 .body("booking.additionalneeds", equalTo("Nothing"));
 
     }
+
+    @Test
+    @DisplayName("Create Booking with different date format (YYYY_MM_DD)")
+    public void createBookingInvalidDataTest() {
+        BookingDates bookingDates = new BookingDates("2024_01_01", "2024_01_10");
+        Booking booking = new Booking("John","Markakis",50,true,bookingDates,"Nothing");
+        given()
+                .contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .body(booking)
+                .when()
+                .post("/booking")
+                .then()
+                .statusCode(200)
+                .body("bookingid", notNullValue())
+                .body("booking.firstname", equalTo("John"))
+                .body("booking.lastname", equalTo("Markakis"))
+                .body("booking.totalprice", equalTo(50))
+                .body("booking.bookingdates.checkin", equalTo("2024_01_01"))
+                .body("booking.bookingdates.checkout", equalTo("2024_01_10"))
+                .body("booking.additionalneeds", equalTo("Nothing"));
+    }
+
+    @Test
+    @DisplayName("Create Booking with different date format (YYYY/MM/DD)")
+    public void createBookingInvalidDataTest2() {
+        BookingDates bookingDates = new BookingDates("2024/01/01", "2024/01/10");
+        Booking booking = new Booking("John","Markakis",50,true,bookingDates,"Nothing");
+        given()
+                .contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .body(booking)
+                .when()
+                .post("/booking")
+                .then()
+                .statusCode(200)
+                .body("bookingid", notNullValue())
+                .body("booking.firstname", equalTo("John"))
+                .body("booking.lastname", equalTo("Markakis"))
+                .body("booking.totalprice", equalTo(50))
+                .body("booking.bookingdates.checkin", equalTo("2024/01/01"))
+                .body("booking.bookingdates.checkout", equalTo("2024/01/10"))
+                .body("booking.additionalneeds", equalTo("Nothing"));
+    }
+
+    @Test
+    @DisplayName("Create Booking with invalid data (missing lastname)")
+    public void createBookingInvalidDataTest3() {
+        BookingDates bookingDates = new BookingDates("2024-01-01", "2024-01-10");
+        Booking booking = new Booking("John",null,50,true,bookingDates,"Nothing");
+        given()
+                .contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .body(booking)
+                .when()
+                .post("/booking")
+                .then()
+                .statusCode(400);
+    }
 }

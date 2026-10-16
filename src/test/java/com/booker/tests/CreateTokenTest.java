@@ -17,6 +17,20 @@ public class CreateTokenTest {
 
     String token;
 
+    public static String getAuthToken() {
+        AuthCredentials credentials = new AuthCredentials("admin", "password123");
+
+        return given()
+                .header("Content-Type", "application/json")
+                .body(credentials)
+                .when()
+                .post("/auth")
+                .then()
+                .statusCode(200)
+                .extract()
+                .path("token");
+    }
+
     @BeforeAll
     public static void setup() {
         RestAssured.baseURI = "https://restful-booker.herokuapp.com";
@@ -26,7 +40,7 @@ public class CreateTokenTest {
     @DisplayName("Create Token with True credentials.")
     public void createToken() {
         AuthCredentials credentials = new AuthCredentials("admin", "password123");
-        Response response = (Response) given()
+        given()
                 .header("Accept","application/json")
                 .header("Content-Type", "application/json")
                 .body(credentials)
@@ -35,7 +49,7 @@ public class CreateTokenTest {
                 .then()
                 .statusCode(200)
                 .body("token", notNullValue());
-        this.token =  response.getBody().asString();
+
     }
 
     @Test
