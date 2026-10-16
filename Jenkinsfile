@@ -10,7 +10,8 @@ pipeline {
         stage('Run Automated Tests') {
             steps {
                 script {
-                    def cmd = "mvn clean test"
+                    // Προσθήκη του goal surefire-report:report-only στο τέλος
+                    def cmd = "mvn clean test surefire-report:report-only"
 
                     def selectedTag = params.TAGS
                     if (selectedTag != null && !selectedTag.contains("All tests") && selectedTag.trim() != "") {
@@ -26,12 +27,12 @@ pipeline {
     post {
         always {
             publishHTML(target: [
-                allowMissing: true,
+                allowMissing: false,
                 alwaysLinkToLastBuild: true,
                 keepAll: true,
-                reportDir: 'target/reports',
-                reportFiles: 'report.html',
-                reportName: 'Test Report'
+                reportDir: 'target/site',
+                reportFiles: 'surefire-report.html',
+                reportName: 'Surefire Test Report'
             ])
 
             junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
