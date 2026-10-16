@@ -6,6 +6,7 @@ import io.restassured.response.Response;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.List;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
+@Tag("smoke")
+@Tag("CreateToken")
 public class CreateTokenTest {
 
     String token;

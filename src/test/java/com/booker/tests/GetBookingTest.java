@@ -10,6 +10,7 @@ import java.util.List;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
+@Tag("GetBooking")
 public class GetBookingTest {
 
     public static int getFirstBookingId() {

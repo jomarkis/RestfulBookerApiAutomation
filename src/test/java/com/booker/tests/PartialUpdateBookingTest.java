@@ -5,11 +5,13 @@ import com.booker.models.BookingDates;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
+@Tag("PartialUpdateBooking")
 public class PartialUpdateBookingTest {
 
     static String token;
