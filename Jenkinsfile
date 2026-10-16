@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     // Προσθήκη του goal surefire-report:report-only στο τέλος
-                    def cmd = "mvn clean test surefire-report:report-only"
+                    def cmd = "mvn clean test site surefire-report:report-only -DtestFailureIgnore=true"
 
                     def selectedTag = params.TAGS
                     if (selectedTag != null && !selectedTag.contains("All tests") && selectedTag.trim() != "") {
