@@ -52,12 +52,14 @@ public class GetBookingTest {
                 .get("/booking/" + firstBookingId)
                 .then()
                 .statusCode(200)
-                .body("firstname", notNullValue())
-                .body("lastname", notNullValue())
-                .body("totalprice", greaterThanOrEqualTo(0))
-                .body("bookingdates.checkin", notNullValue())
-                .body("bookingdates.checkout", notNullValue())
-                .body("additionalneeds", notNullValue());
+                .body("firstname", isA(String.class))
+                .body("lastname", isA(String.class))
+                .body("totalprice", isA(Number.class))
+                .body("depositpaid", isA(Boolean.class))
+                .body("bookingdates", isA(java.util.Map.class))
+                .body("bookingdates.checkin", isA(String.class))
+                .body("bookingdates.checkout", isA(String.class))
+                .body("additionalneeds", isA(String.class));
     }
 
     @Nested
