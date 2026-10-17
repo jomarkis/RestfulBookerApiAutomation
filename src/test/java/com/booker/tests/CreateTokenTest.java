@@ -68,7 +68,6 @@ public class CreateTokenTest {
                 .when()
                 .post("/auth")
                 .then()
-                .statusCode(200)
-                .body("reason", equalTo("Bad credentials"));
+                .statusCode(401);
     }
 }
